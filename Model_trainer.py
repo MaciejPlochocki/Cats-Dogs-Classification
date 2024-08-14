@@ -7,6 +7,8 @@ from config import (
     OPTIMIZER,
     LOSS,
     METRICS,
+    PATIENCE,
+    BASE_MODELS,
 )
 from keras import models, layers, applications
 from keras.api.callbacks import ModelCheckpoint, EarlyStopping
@@ -26,7 +28,7 @@ class ModelTrainer:
         The model to be trained.
     """
 
-    def __init__(self, num_classes, epochs):
+    def __init__(self, num_classes, epochs, base_model_name):
         """
         Initializes the ModelTrainer with the number of classes.
 
@@ -37,42 +39,30 @@ class ModelTrainer:
         """
         self.input_shape = (IMG_HEIGHT, IMG_WIDTH, 3)
         self.num_classes = num_classes
+        self.base_model_name = base_model_name
         self.model = None
         self.EPOCHS = epochs
 
     def build_model(self):
-        """
-        Builds the model based on the selected base model.
-        """
-        if BASE_MODEL_NAME == "VGG16":
-            base_model = applications.VGG16(
-                weights="imagenet",
-                include_top=False,  # bez warstwy klasyfikacyjnej
-                input_shape=self.input_shape,
-            )
+        if self.base_model_name not in BASE_MODELS:
+            raise ValueError(f"Nieobsługiwany model bazowy: {self.base_model_name}")
 
-            x = base_model.output
-            x = layers.GlobalAveragePooling2D()(x)
-            x = layers.Dense(256, activation="relu")(x)
-            x = layers.Dropout(0.5)(x)
-            predictions = layers.Dense(self.num_classes, activation="softmax")(x)
+        base_model_fn = BASE_MODELS[self.base_model_name]
+        base_model = base_model_fn(
+            weights="imagenet",
+            include_top=False,
+            input_shape=self.input_shape,
+        )
 
-            self.model = models.Model(inputs=base_model.input, outputs=predictions)
+        print("BASE MODEL IS: ", BASE_MODEL_NAME)
 
-        elif BASE_MODEL_NAME == "Xception":
-            base_model = applications.Xception(
-                weights="imagenet",
-                include_top=False,
-                input_shape=self.input_shape,
-            )
+        x = base_model.output
+        x = layers.GlobalAveragePooling2D()(x)
+        x = layers.Dense(256, activation="relu")(x)
+        x = layers.Dropout(0.5)(x)
+        predictions = layers.Dense(self.num_classes, activation="softmax")(x)
 
-            x = base_model.output
-            x = layers.GlobalAveragePooling2D()(x)
-            x = layers.Dense(256, activation="relu")(x)
-            x = layers.Dropout(0.5)(x)
-            predictions = layers.Dense(self.num_classes, activation="softmax")(x)
-
-            self.model = models.Model(inputs=base_model.input, outputs=predictions)
+        self.model = models.Model(inputs=base_model.input, outputs=predictions)
 
     def compile_model(self):
         """
@@ -91,17 +81,17 @@ class ModelTrainer:
             The dataset used for validating the model during training.
         """
 
-        # checkpoint = ModelCheckpoint("best_model.keras", save_best_only=True)
+        checkpoint = ModelCheckpoint("best_model.keras", save_best_only=True)
         callbacks = [
-            EarlyStopping(patience=3),
+            EarlyStopping(PATIENCE),
         ]
         self.model.fit(
-            train_ds, epochs=self.EPOCHS, validation_data=val_ds, callbacks=[callbacks]
+            train_ds, epochs=self.EPOCHS, validation_data=val_ds, callbacks=[checkpoint]
         )
 
     def validate_model(self, val_ds):
         """
-        Validates the model using the provided validation dataset.
+        Validates the model using the validation ds.
 
         Parameters:
         val_ds : tf.data.Dataset
@@ -115,7 +105,7 @@ class ModelTrainer:
 
     def test_model(self, test_ds):
         """
-        Tests the model using the provided test dataset.
+        Tests the model using test ds.
 
         Parameters:
         test_ds : tf.data.Dataset

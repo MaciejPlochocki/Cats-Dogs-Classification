@@ -62,19 +62,3 @@ class PredictionVisualizer:
 
         plt.tight_layout()
         plt.show()
-
-    def show_test_predictions(self, dataset):
-        plt.figure(figsize=(10, 10))
-        for images, labels in dataset.take(1):
-            predictions = self.model.predict(images)
-            for i in range(9):
-                ax = plt.subplot(3, 3, i + 1)
-                plt.imshow(images[i].numpy().astype("uint8"))
-                pred_class = np.argmax(predictions[i])
-                true_class = np.argmax(labels[i])
-                confidence = np.max(predictions[i]) * 100
-                plt.title(
-                    f"True: {self.class_names[true_class]}\nPred: {self.class_names[pred_class]} ({confidence:.2f}%)"
-                )
-                plt.axis("off")
-        plt.show()

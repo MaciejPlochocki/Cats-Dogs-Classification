@@ -10,6 +10,7 @@ from config import (
 )
 import tensorflow as tf
 from keras import utils
+import numpy as np
 
 
 class DataLoader:
