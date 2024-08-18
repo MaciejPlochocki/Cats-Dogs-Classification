@@ -44,6 +44,29 @@ class ModelTrainer:
         self.EPOCHS = epochs
 
     def build_model(self):
+        """
+        Builds a deep learning model by customizing a pre-trained base model.
+
+    This method initializes a base model from a predefined set of models 
+    (e.g., ResNet, Inception) with weights pre-trained on the ImageNet dataset. 
+    Custom layers are added on top of the base model to adapt it for the specific 
+    classification task.
+
+    Raises:
+    -------
+    ValueError:
+        If the specified base model name is not in the predefined set of base models.
+
+    Attributes:
+    ----------
+    base_model_name : str
+        The name of the pre-trained base model to be used.
+    num_classes : int
+        The number of output classes for the model.
+    model : tensorflow.keras.Model
+        The constructed Keras model ready for training.
+        
+        """
         if self.base_model_name not in BASE_MODELS:
             raise ValueError(f"Nieobsługiwany model bazowy: {self.base_model_name}")
 

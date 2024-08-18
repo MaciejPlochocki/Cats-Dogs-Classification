@@ -1,11 +1,11 @@
 from keras.api import applications
 
 # Path to ds
-SRC_PATH_TRAIN = "ds/catsvsdogs/imgs/trainv2/"
+SRC_PATH_TRAIN = "ds/catsvsdogs/imgs/train/"
 SRC_PATH_VALID = "ds/catsvsdogs/imgs/validation/"
 SRC_PATH_TEST = "ds/catsvsdogs/imgs/test/"
 SRC_MODEL_PATH = "best_model.keras"
-IMAGE_PATH = "ds/catsvsdogs/imgs/dogs/dog07.jpg"
+IMAGE_PATH = "ds/catsvsdogs/imgs/example_imgs/dog.jpg"
 VIDEO_PATH = "ds/catsvsdogs/videos/cat1.mp4"
 
 # Model and training params
