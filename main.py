@@ -47,11 +47,10 @@ if __name__ == "__main__":
         SRC_MODEL_PATH, input_shape=INPUT_SHAPE, class_names=class_names
     )
 
-    prediction = predictor.predict_image(IMAGE_PATH)
+    image_prediction = predictor.predict_image(IMAGE_PATH)
 
-    print("Predicted class:", prediction)
+    print("Predicted class for image :", image_prediction)
 
-    # # predict video
-
-    # video_path = VIDEO_PATH
-    # predictor.predict_video(video_path)
+    # predict video
+    video_prediction = predictor.predict_video(VIDEO_PATH)
+    print("Predicted class for the video:", video_prediction)

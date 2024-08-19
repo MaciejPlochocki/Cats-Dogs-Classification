@@ -1,4 +1,4 @@
-from config import IMG_HEIGHT, IMG_WIDTH
+import cv2
 import numpy as np
 from keras.api.models import load_model
 from keras.api.preprocessing.image import img_to_array, load_img
@@ -7,7 +7,7 @@ import tensorflow as tf
 
 class ModelPredictor:
     """
-    The ModelPredictor class is used for loading a deep learning model and making predictions on images.
+    The ModelPredictor class is used for loading a deep learning model and making predictions on images and videos.
 
     Attributes:
     -----------
@@ -20,11 +20,14 @@ class ModelPredictor:
 
     Methods:
     --------
-    preprocess_image(image_path):
+    preprocess_image(image):
         Preprocesses the image to the correct input format for the model.
     predict_image(image_path):
         Predicts the class of the given image.
+    predict_video(video_path):
+        Predicts the class of the given video.
     """
+
     def __init__(self, model_path, input_shape, class_names):
         """
         Initializes the ModelPredictor object.
@@ -36,28 +39,25 @@ class ModelPredictor:
         input_shape : tuple
             The input shape of images for the model in the format (height, width, number of channels).
         class_names : list
-    """
+        """
         self.model = load_model(model_path)
         self.input_shape = input_shape
         self.class_names = class_names
 
-    def preprocess_image(self, image_path):
+    def preprocess_image(self, image):
         """
         Preprocesses the image to match the model's input requirements.
 
         Parameters:
         ----------
-        image_path : str
-            The path to the image file.
+        image : numpy.ndarray
+            The image as a numpy array.
 
         Returns:
         -------
         numpy.ndarray
             The preprocessed image as a numpy array, ready to be input into the model.
         """
-        image = load_img(
-            image_path, target_size=(self.input_shape[0], self.input_shape[1])
-        )
         img_array = img_to_array(image)
         img_array = tf.image.resize(
             img_array, (self.input_shape[0], self.input_shape[1])
@@ -79,8 +79,9 @@ class ModelPredictor:
         -------
         str
             The name of the predicted class.
-    """
-        preprocessed_image = self.preprocess_image(image_path)
+        """
+        image = load_img(image_path)
+        preprocessed_image = self.preprocess_image(image)
         predictions = self.model.predict(preprocessed_image)
 
         predicted_class_index = np.argmax(predictions[0])
@@ -88,9 +89,45 @@ class ModelPredictor:
 
         return predicted_class_name
 
-    # # to do:
-    # def preprocess_video(self, video_path):
-    #     print("videło")
+    def predict_video(self, video_path, frame_skip=10):
+        """
+        Predicts the class of the given video using loaded model.
 
-    # def predict_video(self, video_path):
-    #     print("kłot")
+        Parameters:
+
+        image_path : str
+            The path to the image file.
+
+        frame_skip : int
+            Number of frames to skip in prediction proccess
+
+        Returns:
+
+        str
+            The name of the predicted class.
+        """
+        cap = cv2.VideoCapture(video_path)
+        predictions = []
+        frame_count = 0
+
+        while cap.isOpened():
+            ret, frame = cap.read()
+            if not ret:
+                break
+
+            if frame_count % frame_skip == 0:
+                frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+                preprocessed_frame = self.preprocess_image(frame_rgb)
+                prediction = self.model.predict(preprocessed_frame)
+                predictions.append(prediction)
+
+            frame_count += 1
+
+        cap.release()
+
+        predictions = np.array(predictions)
+        average_prediction = np.mean(predictions, axis=0)
+        predicted_class_index = np.argmax(average_prediction)
+        predicted_class_name = self.class_names[predicted_class_index]
+
+        return predicted_class_name

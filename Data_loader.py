@@ -8,9 +8,8 @@ from config import (
     LABEL_MODE,
     SHUFFLE,
 )
-import tensorflow as tf
+
 from keras import utils
-import numpy as np
 
 
 class DataLoader:

@@ -1,16 +1,13 @@
 from config import (
-    IMG_HEIGHT,
-    IMG_WIDTH,
     BASE_MODEL_NAME,
-    INCLUDE_TOP,
-    EPOCHS,
     OPTIMIZER,
     LOSS,
     METRICS,
     PATIENCE,
     BASE_MODELS,
+    INPUT_SHAPE,
 )
-from keras import models, layers, applications
+from keras import models, layers
 from keras.api.callbacks import ModelCheckpoint, EarlyStopping
 
 
@@ -37,7 +34,7 @@ class ModelTrainer:
         num_classes : int
             The number of output classes for the model.
         """
-        self.input_shape = (IMG_HEIGHT, IMG_WIDTH, 3)
+        self.input_shape = INPUT_SHAPE
         self.num_classes = num_classes
         self.base_model_name = base_model_name
         self.model = None
@@ -45,30 +42,32 @@ class ModelTrainer:
 
     def build_model(self):
         """
-        Builds a deep learning model by customizing a pre-trained base model.
+            Builds  model by customizing a pre-trained base model.
 
-    This method initializes a base model from a predefined set of models 
-    (e.g., ResNet, Inception) with weights pre-trained on the ImageNet dataset. 
-    Custom layers are added on top of the base model to adapt it for the specific 
-    classification task.
+        This method initializes a base model from a predefined set of models
+        (e.g., ResNet, Inception, list of available models: https://keras.io/api/applications/)  with weights pre-trained on the ImageNet dataset.
+        Custom layers are added on top of the base model to adapt it for the specific
+        classification task.
 
-    Raises:
-    -------
-    ValueError:
-        If the specified base model name is not in the predefined set of base models.
+        Raises:
 
-    Attributes:
-    ----------
-    base_model_name : str
-        The name of the pre-trained base model to be used.
-    num_classes : int
-        The number of output classes for the model.
-    model : tensorflow.keras.Model
-        The constructed Keras model ready for training.
-        
+        ValueError:
+            If the specified base model name is not in the predefined set of base models.
+
+        Parameters:
+
+        base_model_name : str
+            The name of the pre-trained base model to be used.
+        num_classes : int
+            The number of output classes for the model.
+        model : tensorflow.keras.Model
+            The constructed Keras model ready for training.
+
         """
         if self.base_model_name not in BASE_MODELS:
-            raise ValueError(f"Nieobsługiwany model bazowy: {self.base_model_name}")
+            raise ValueError(
+                f"This base model is not supported: {self.base_model_name}"
+            )
 
         base_model_fn = BASE_MODELS[self.base_model_name]
         base_model = base_model_fn(

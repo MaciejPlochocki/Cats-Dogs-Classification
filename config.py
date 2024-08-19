@@ -1,19 +1,19 @@
 from keras.api import applications
 
 # Path to ds
-SRC_PATH_TRAIN = "ds/catsvsdogs/imgs/train/"
+SRC_PATH_TRAIN = "ds/catsvsdogs/imgs/trainv2/"
 SRC_PATH_VALID = "ds/catsvsdogs/imgs/validation/"
 SRC_PATH_TEST = "ds/catsvsdogs/imgs/test/"
 SRC_MODEL_PATH = "best_model.keras"
-IMAGE_PATH = "ds/catsvsdogs/imgs/example_imgs/dog.jpg"
-VIDEO_PATH = "ds/catsvsdogs/videos/cat1.mp4"
+IMAGE_PATH = "ds/catsvsdogs/imgs/pred/cat56.jpg"
+VIDEO_PATH = "ds/catsvsdogs/imgs/pred/cat2.mp4"
 
 # Model and training params
 BATCH_SIZE = 20
 IMG_HEIGHT = 256
 IMG_WIDTH = 256
 EPOCHS = 10
-BASE_MODEL_NAME = "VGG16"
+BASE_MODEL_NAME = "Xception"
 INCLUDE_TOP = True
 PATIENCE = 3
 
@@ -23,10 +23,10 @@ LOSS = "categorical_crossentropy"
 METRICS = ["accuracy"]
 # others
 LABEL_MODE = "categorical"
-SHUFFLE = True  # Czy mieszać dane
+SHUFFLE = True
 INPUT_SHAPE = (IMG_HEIGHT, IMG_WIDTH, 3)
 
-
+# Base models dict
 BASE_MODELS = {
     "VGG16": applications.VGG16,
     "VGG19": applications.VGG19,
