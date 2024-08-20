@@ -4,9 +4,9 @@ from keras.api import applications
 SRC_PATH_TRAIN = "ds/catsvsdogs/imgs/trainv2/"
 SRC_PATH_VALID = "ds/catsvsdogs/imgs/validation/"
 SRC_PATH_TEST = "ds/catsvsdogs/imgs/test/"
-SRC_MODEL_PATH = "best_model.keras"
-IMAGE_PATH = "ds/catsvsdogs/imgs/pred/cat56.jpg"
-VIDEO_PATH = "ds/catsvsdogs/imgs/pred/cat2.mp4"
+SRC_MODEL_PATH = "models/best_model.keras"
+IMAGE_PATH = "ds/catsvsdogs/imgs/pred/19.jpg"
+VIDEO_PATH = "ds/catsvsdogs/imgs/pred/cat1.mp4"
 
 # Model and training params
 BATCH_SIZE = 20

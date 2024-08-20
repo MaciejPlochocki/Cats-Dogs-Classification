@@ -14,16 +14,14 @@ class PredictionVisualizer:
         A list of class names corresponding to the model's output labels.
     """
 
-    def __init__(self, model, class_names):
+    def __init__(self, model: object, class_names: list):
         """
         Initializes the PredictionVisualizer with a model and class names.
 
         Parameters:
 
-        model : object
-            The trained model used to predict labels for the images.
-        class_names : list of str
-            The list of class names that correspond to the model's output classes.
+        model : The trained model used to predict labels for the images.
+        class_names : The list of class names that correspond to the model's output classes.
         """
         self.model = model
         self.class_names = class_names
@@ -57,7 +55,7 @@ class PredictionVisualizer:
             plt.imshow(image[0].astype("uint8"))
             plt.axis("off")
             plt.title(
-                f"Pred: {self.class_names[predicted_label]}\nTrue: {self.class_names[true_label]}"
+                f"Pred label: {self.class_names[predicted_label]}\nTrue label: {self.class_names[true_label]}"
             )
 
         plt.tight_layout()

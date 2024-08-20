@@ -3,12 +3,12 @@ from config import (
     OPTIMIZER,
     LOSS,
     METRICS,
-    PATIENCE,
     BASE_MODELS,
     INPUT_SHAPE,
 )
 from keras import models, layers
-from keras.api.callbacks import ModelCheckpoint, EarlyStopping
+from keras.api.callbacks import ModelCheckpoint
+import tensorflow as tf
 
 
 class ModelTrainer:
@@ -25,14 +25,13 @@ class ModelTrainer:
         The model to be trained.
     """
 
-    def __init__(self, num_classes, epochs, base_model_name):
+    def __init__(self, num_classes: int, epochs: int, base_model_name: str):
         """
         Initializes the ModelTrainer with the number of classes.
 
         Parameters:
 
-        num_classes : int
-            The number of output classes for the model.
+        num_classes : The number of output classes for the model.
         """
         self.input_shape = INPUT_SHAPE
         self.num_classes = num_classes
@@ -92,100 +91,63 @@ class ModelTrainer:
         """
         self.model.compile(optimizer=OPTIMIZER, loss=LOSS, metrics=METRICS)
 
-    def train_model(self, train_ds, val_ds):
+    def train_model(self, train_ds: tf.data.Dataset, val_ds: tf.data.Dataset):
         """
         Trains the model using the provided training and validation datasets.
 
-        Parameters:
-        train_ds : tf.data.Dataset
-            The dataset used for training the model.
-        val_ds : tf.data.Dataset
-            The dataset used for validating the model during training.
         """
 
-        checkpoint = ModelCheckpoint("best_model.keras", save_best_only=True)
-        callbacks = [
-            EarlyStopping(PATIENCE),
-        ]
+        checkpoint = ModelCheckpoint("models/best_model.keras", save_best_only=True)
+
         self.model.fit(
             train_ds, epochs=self.EPOCHS, validation_data=val_ds, callbacks=[checkpoint]
         )
 
-    def validate_model(self, val_ds):
+    def validate_model(self, val_ds: tf.data.Dataset) -> dict:
         """
         Validates the model using the validation ds.
 
-        Parameters:
-        val_ds : tf.data.Dataset
-            The dataset used for validating the model.
-
-        Returns:
-        validation_metrics : dict
-            The validation metrics of the model on the validation dataset.
         """
         return self.model.evaluate(val_ds, verbose=1)
 
-    def test_model(self, test_ds):
+    def test_model(self, test_ds: tf.data.Dataset) -> dict:
         """
         Tests the model using test ds.
 
-        Parameters:
-        test_ds : tf.data.Dataset
-            The dataset used for testing the model.
-
-        Returns:
-        test_metrics : dict
-            The test metrics of the model on the test dataset.
         """
         return self.model.evaluate(test_ds, verbose=1)
 
-    def get_model(self):
+    def get_model(self) -> object:
         """
         Returns the trained model.
 
-        Returns:
-
-        model : object
-            The trained machine learning model.
         """
         return self.model
 
-    def save_model(self, model_path="model.keras"):
+    def save_model(self, model_path: str = "model.keras"):
         """
         Saves the entire model to a file.
 
-        Parameters:
-        model_path : str
-            The path where the model will be saved.
         """
         self.model.save(model_path)
 
-    def load_model(self, model_path="model.keras"):
+    def load_model(self, model_path: str = "model.keras"):
         """
         Loads a model from a file.
 
-        Parameters:
-        model_path : str
-            The path from where the model will be loaded.
         """
         self.model = models.load_model(model_path)
 
-    def save_weights(self, weights_path="model_weights.h5"):
+    def save_weights(self, weights_path: str = "model_weights.h5"):
         """
         Saves the model's weights to a file.
 
-        Parameters:
-        weights_path : str
-            The path where the weights will be saved.
         """
         self.model.save_weights(weights_path)
 
-    def load_weights(self, weights_path="model_weights.h5"):
+    def load_weights(self, weights_path: str = "model_weights.h5"):
         """
         Loads the model's weights from a file.
 
-        Parameters:
-        weights_path : str
-            The path from where the weights will be loaded.
         """
         self.model.load_weights(weights_path)

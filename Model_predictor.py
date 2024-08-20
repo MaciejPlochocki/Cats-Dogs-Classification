@@ -28,35 +28,24 @@ class ModelPredictor:
         Predicts the class of the given video.
     """
 
-    def __init__(self, model_path, input_shape, class_names):
+    def __init__(self, model_path: str, input_shape: tuple, class_names: list):
         """
         Initializes the ModelPredictor object.
 
         Parameters:
         ----------
-        model_path : str
-            The path to the saved Keras model file (.h5).
-        input_shape : tuple
-            The input shape of images for the model in the format (height, width, number of channels).
-        class_names : list
+        model_path : The path to the saved Keras model file (.h5).
+        input_shape : The input shape of images for the model in the format (height, width, number of channels).
+        class_names : list of class names
         """
         self.model = load_model(model_path)
         self.input_shape = input_shape
         self.class_names = class_names
 
-    def preprocess_image(self, image):
+    def preprocess_image(self, image: np.ndarray) -> np.ndarray:
         """
         Preprocesses the image to match the model's input requirements.
 
-        Parameters:
-        ----------
-        image : numpy.ndarray
-            The image as a numpy array.
-
-        Returns:
-        -------
-        numpy.ndarray
-            The preprocessed image as a numpy array, ready to be input into the model.
         """
         img_array = img_to_array(image)
         img_array = tf.image.resize(
@@ -66,19 +55,10 @@ class ModelPredictor:
         img_array = img_array / 255.0
         return img_array
 
-    def predict_image(self, image_path):
+    def predict_image(self, image_path: str) -> str:
         """
         Predicts the class of the given image using the loaded model.
 
-        Parameters:
-        ----------
-        image_path : str
-            The path to the image file.
-
-        Returns:
-        -------
-        str
-            The name of the predicted class.
         """
         image = load_img(image_path)
         preprocessed_image = self.preprocess_image(image)
@@ -89,22 +69,10 @@ class ModelPredictor:
 
         return predicted_class_name
 
-    def predict_video(self, video_path, frame_skip=10):
+    def predict_video(self, video_path: str, frame_skip: int = 10) -> str:
         """
         Predicts the class of the given video using loaded model.
 
-        Parameters:
-
-        image_path : str
-            The path to the image file.
-
-        frame_skip : int
-            Number of frames to skip in prediction proccess
-
-        Returns:
-
-        str
-            The name of the predicted class.
         """
         cap = cv2.VideoCapture(video_path)
         predictions = []
