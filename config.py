@@ -1,33 +1,33 @@
 from keras.api import applications
 
 # Path to ds
-SRC_PATH_TRAIN = "ds/catsvsdogs/imgs/trainv2/"
-SRC_PATH_VALID = "ds/catsvsdogs/imgs/validation/"
-SRC_PATH_TEST = "ds/catsvsdogs/imgs/test/"
-SRC_MODEL_PATH = "models/best_model.keras"
-IMAGE_PATH = "ds/catsvsdogs/imgs/pred/19.jpg"
-VIDEO_PATH = "ds/catsvsdogs/imgs/pred/cat1.mp4"
+SRC_PATH_TRAIN: str = "ds/catsvsdogs/imgs/trainv2/"
+SRC_PATH_VALID: str = "ds/catsvsdogs/imgs/validation/"
+SRC_PATH_TEST: str = "ds/catsvsdogs/imgs/test/"
+SRC_MODEL_PATH: str = "models/best_model.keras"
+IMAGE_PATH: str = "ds/catsvsdogs/imgs/pred/12.jpg"
+VIDEO_PATH: str = "ds/catsvsdogs/imgs/pred/cat3.mp4"
 
 # Model and training params
-BATCH_SIZE = 20
-IMG_HEIGHT = 256
-IMG_WIDTH = 256
-EPOCHS = 10
-BASE_MODEL_NAME = "Xception"
-INCLUDE_TOP = True
-PATIENCE = 3
+BATCH_SIZE: int = 20
+IMG_HEIGHT: int = 256
+IMG_WIDTH: int = 256
+EPOCHS: int = 10
+BASE_MODEL_NAME: str = "Xception"
+INCLUDE_TOP: bool = True
+PATIENCE: int = 3
 
 # Compilation model params
-OPTIMIZER = "adam"
-LOSS = "categorical_crossentropy"
-METRICS = ["accuracy"]
+OPTIMIZER: str = "adam"
+LOSS: str = "categorical_crossentropy"
+METRICS: list[str] = ["accuracy"]
 # others
-LABEL_MODE = "categorical"
-SHUFFLE = True
-INPUT_SHAPE = (IMG_HEIGHT, IMG_WIDTH, 3)
+LABEL_MODE: str = "categorical"
+SHUFFLE: bool = True
+INPUT_SHAPE: tuple = (IMG_HEIGHT, IMG_WIDTH, 3)
 
 # Base models dict
-BASE_MODELS = {
+BASE_MODELS: dict = {
     "VGG16": applications.VGG16,
     "VGG19": applications.VGG19,
     "Xception": applications.Xception,

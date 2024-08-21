@@ -25,7 +25,7 @@ class ModelTrainer:
         The model to be trained.
     """
 
-    def __init__(self, num_classes: int, epochs: int, base_model_name: str):
+    def __init__(self, num_classes: int, epochs: int, base_model_name: str) -> None:
         """
         Initializes the ModelTrainer with the number of classes.
 
@@ -43,7 +43,7 @@ class ModelTrainer:
         """
             Builds  model by customizing a pre-trained base model.
 
-        This method initializes a base model from a predefined set of models
+        This method initializes a base model from a predefined dict of models
         (e.g., ResNet, Inception, list of available models: https://keras.io/api/applications/)  with weights pre-trained on the ImageNet dataset.
         Custom layers are added on top of the base model to adapt it for the specific
         classification task.
@@ -55,10 +55,8 @@ class ModelTrainer:
 
         Parameters:
 
-        base_model_name : str
-            The name of the pre-trained base model to be used.
-        num_classes : int
-            The number of output classes for the model.
+        base_model_name : The name of the pre-trained base model to be used.
+        num_classes : The number of output classes for the model.
         model : tensorflow.keras.Model
             The constructed Keras model ready for training.
 
@@ -91,9 +89,13 @@ class ModelTrainer:
         """
         self.model.compile(optimizer=OPTIMIZER, loss=LOSS, metrics=METRICS)
 
-    def train_model(self, train_ds: tf.data.Dataset, val_ds: tf.data.Dataset):
+    def train_model(
+        self,
+        train_ds: tf.data.Dataset,
+        val_ds: tf.data.Dataset,
+    ):
         """
-        Trains the model using the provided training and validation datasets.
+        Train the model using the provided training and validation datasets.
 
         """
 

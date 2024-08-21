@@ -10,6 +10,7 @@ from config import (
 )
 
 from keras import utils
+import tensorflow as tf
 
 
 class DataLoader:
@@ -42,7 +43,7 @@ class DataLoader:
         The number of classes in the dataset.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Initializes the DataLoader with specified configurations for image data loading.
         """
@@ -56,10 +57,10 @@ class DataLoader:
         self.shuffle = SHUFFLE
         self.train_ds = None
         self.val_ds = None
-        self.class_names = []
-        self.num_classes = 0
+        self.class_names: list[str] = []
+        self.num_classes: int = 0
 
-    def load_data(self):
+    def load_data(self) -> None:
         """
         Loads the training and validation datasets from the specified directories.
         """

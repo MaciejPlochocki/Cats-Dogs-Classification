@@ -28,7 +28,7 @@ class ModelPredictor:
         Predicts the class of the given video.
     """
 
-    def __init__(self, model_path: str, input_shape: tuple, class_names: list):
+    def __init__(self, model_path: str, input_shape: tuple, class_names: list) -> None:
         """
         Initializes the ModelPredictor object.
 

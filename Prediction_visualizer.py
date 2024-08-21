@@ -14,7 +14,7 @@ class PredictionVisualizer:
         A list of class names corresponding to the model's output labels.
     """
 
-    def __init__(self, model: object, class_names: list):
+    def __init__(self, model: object, class_names: list) -> None:
         """
         Initializes the PredictionVisualizer with a model and class names.
 
@@ -26,7 +26,7 @@ class PredictionVisualizer:
         self.model = model
         self.class_names = class_names
 
-    def show_prediction(self, data):
+    def show_prediction(self, data) -> None:
         """
         Displays images with their predicted and true labels.
 
@@ -40,7 +40,7 @@ class PredictionVisualizer:
                 The true labels for the batch of images.
         """
         images, labels = next(iter(data))
-        num_images = len(images)
+        num_images: int = len(images)
         plt.figure(figsize=(12, 12))
 
         for i in range(num_images):
