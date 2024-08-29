@@ -14,7 +14,7 @@
 
 ## Project Overview
 
-This repository contains the code and documentation for an image classification project completed during my internship at **[Company Name]** in 2024. The project focuses on classifying images into two categories: cats and dogs. The goal is to build a deep learning model that can accurately classify images into these categories.
+This repository contains the code and documentation for an image classification project completed during my internship in 2024. The project focuses on classifying images into two categories: cats and dogs. The goal is to build a deep learning model that can accurately classify images into these categories.
 
 ## Tech Stack
 
