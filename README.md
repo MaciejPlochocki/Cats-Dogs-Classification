@@ -2,7 +2,7 @@
 **Project Overview**
 This repository contains the code and documentation for a Machine Learning project completed during my internship  in 2024. The project focused on image classification, specifically distinguishing between images of cats and dogs. The goal was to develop a deep learning model that accurately classifies images into one of two categories: "cat" or "dog."
 
-**Tech Stack**
+**Tech Stack** \n
 The project was developed using the following technologies and tools:
 
 Python: The primary programming language used for the project.
