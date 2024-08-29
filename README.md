@@ -8,9 +8,6 @@
 - [Model Training](#model-training)
 - [Prediction](#prediction)
 - [Usage](#usage)
-- [Future Improvements](#future-improvements)
-- [Contributing](#contributing)
-- [License](#license)
 
 ## Project Overview
 
